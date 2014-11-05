@@ -32,15 +32,7 @@ var Figure = function() {
     this.part_disps = tmp_disps;
   };
 
-  this.pull_left = function() {
-    // check if figure still on field
-    this.position[0] -= 1;
-  };
-  this.pull_right = function() {
-    // check if figure still on field
-    this.position[0] += 1;
-  };
-  this.pull_down = function() {
+  this.pull_left = function(Qll_down = function() {
     // check if figure still on field
     // check if figure is not on built part
     this.position[1] += 1;

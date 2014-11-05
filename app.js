@@ -1,14 +1,19 @@
 // movement
 //
-var animate = function(figure, field, canvas, context) {
-  var disp_step = 40;
-  figure.position[1] += disp_step;
+
+var redraw = function(figure, field, canvas, context) {
   // clear
   context.clearRect(0, 0, canvas.width, canvas.height);
   // draw
-
   field.drawField(context);
   figure.drawFigure(context);
+};
+
+var animate = function(figure, field, canvas, context) {
+  var disp_step = 40;
+  figure.position[1] += disp_step;
+
+  redraw(figure, field, canvas, context);
   // request new frame
   setTimeout(function() {
     animate(figure, field, canvas, context);
@@ -17,8 +22,9 @@ var animate = function(figure, field, canvas, context) {
 
 // main script
 //
-window.onload = function () {
-  var canvas = document.getElementById('playground');
+
+$(document).ready(function() {
+  var canvas = $('#playground')[0];
   var context = canvas.getContext('2d');
 
   var field = new Field();
@@ -28,7 +34,33 @@ window.onload = function () {
   field.drawField(context);
   figure.drawFigure(context);
 
+  $(document).on("keydown", function(event) {
+    switch(event.which) {
+      case 37: // left
+        figure.pull_left();
+        redraw(figure, field, canvas, context);
+        break;
+
+      case 38: // up
+        figure.turn();
+        redraw(figure, field, canvas, context);
+        break;
+
+      case 39: // right
+        figure.pull_right();
+        redraw(figure, field, canvas, context);
+      break;
+
+      case 40: // down
+        figure.pull_down();
+        redraw(figure, field, canvas, context);
+      break;
+
+      default: return; // exit this handler for other keys
+    }
+  });
+
   // setTimeout(function() {
   //   animate(figure, field, canvas, context);
   // }, 1000);
-}
+});
