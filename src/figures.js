@@ -1,58 +1,95 @@
-
 var Figure = function() {
-  this.position     = [1, 1];
+  this.position     = [5, 1];   //[width, height]
   this.figure_size  = [40, 40];
-  this.max_disp     = 3;
-  this.part_disps   = NaN;
+  this.body         = NaN;
   this.color        = NaN;
+
+  var self = this;
 
   this.drawFigure = function(context) {
     context.beginPath();
-    for(var i = 0; i < this.part_disps.length; i++) {
-      context.rect( (this.position[0] + this.part_disps[i][0]) * this.figure_size[0],
-                    (this.position[1] + this.part_disps[i][1]) * this.figure_size[0],
-                    this.figure_size[0],
-                    this.figure_size[1] );
-    };
+    addFigure(context, this);
     addFill(context, this.color);
     addStroke(context, 'black', 2);
   };
 
-  // FIXME: too big rotation !!
+  // FIXME: take a look on rotation!!
   this.turn = function() {
-    var tmp_disps = [];
-    for(var i = 0; i < this.part_disps.length; i++) {
-      var element1 = this.part_disps[i][1],
-          element2 = this.max_disp - this.part_disps[i][0] - 1;
-      tmp_disps.push([element1, element2])
+    for(var i = 0; i < this.body.length; i++) {
+      this.body[i] = [this.body[i][1], -this.body[i][0]]
     };
-    this.part_disps = tmp_disps;
   };
 
-  this.pullLeft = function(field) {
-    if (_isOnField(field, this.position[0] - 1)) {
+  this.pullLeft = function(edge) {
+    if (_find_min_x() + this.position[0] - 1 >= edge) {
       this.position[0] -= 1;
     };
   };
 
-  this.pullRight = function(field) {
-    if (_isOnField(field, this.position[0] + 1)) {
+  this.pullRight = function(edge) {
+    if (_find_max_x() + this.position[0] + 1 < edge) {
       this.position[0] += 1;
     };
   };
 
-  this.pullDown = function() {
-    // check if figure still on field
-    // check if figure is not on built part
-    this.position[1] += 1;
+  this.pullDown = function(field) {
+    if (!(_if_will_cover(field))) {
+      if (_find_max_y() + this.position[1] + 1 < field.y_cells) {
+        this.position[1] += 1;
+      };
+    };
   };
 
   // private functions
-  var _isOnField = function(field, position) {
-    return (position <= field.x_cells) && (position >= 0);
+  var _if_will_cover = function(field) {
+    var shape = [];
+    for(var i = 1; i < self.body.length; i++) {
+      shape.push([self.body[i][0] + self.position[0],
+                  self.body[i][1] + self.position[1] + 1]);
+    };
+    return field.check_if_covered(shape);
+  };
+
+  // TODO: refactoring
+  var _find_max_x = function() {
+    var max_x = self.body[0][0];
+    for(var i = 1; i < self.body.length; i++) {
+      if (max_x < self.body[i][0]) {
+        max_x = self.body[i][0];
+      };
+    };
+    return max_x;
+  };
+
+  var _find_max_y = function() {
+    var max_y = self.body[0][1];
+    for(var i = 1; i < self.body.length; i++) {
+      if (max_y < self.body[i][1]) {
+        max_y = self.body[i][1];
+      };
+    };
+    return max_y;
+  };
+
+  var _find_min_x = function() {
+    var min_x = self.body[0][0];
+    for(var i = 1; i < self.body.length; i++) {
+      if (min_x > self.body[i][0]) {
+        min_x = self.body[i][0];
+      };
+    };
+    return min_x;
   };
 
   // all helpers
+  var addFigure = function(context) {
+    for(var i = 0; i < self.body.length; i++) {
+      var new_x = Math.abs((self.position[0] + self.body[i][0]) * self.figure_size[0]),
+          new_y = Math.abs((self.position[1] + self.body[i][1]) * self.figure_size[1]);
+      context.rect(new_x, new_y, self.figure_size[0], self.figure_size[1]);
+    };
+  };
+
   var addFill = function(context, color) {
     context.fillStyle = color;
     context.fill();
@@ -81,50 +118,51 @@ var FigureBuilder = function() {
   // * * *
   //     *
   var figureType1 = function(figure) {
-    figure.part_disps = [[0, 0], [1, 0], [2, 0], [2, 1]];
     figure.color = 'yellow';
+    figure.body = [[-1, 0], [0, 0], [1, 0], [1, 1]];
     return figure;
   };
   // * * *
   //   *
   var figureType2 = function(figure) {
-    figure.part_disps = [[0, 0], [1, 0], [2, 0], [1, 1]];
     figure.color = '#1487F8';
+    figure.body = [[-1, 0], [0, 0], [1, 0], [0, 1]];
     return figure;
   };
   // * *
   //   * *
   var figureType3 = function(figure) {
-    figure.part_disps = [[0, 0], [1, 0], [1, 1], [2, 1]];
     figure.color = '#0EEB1F';
+    figure.body = [[-1, 0], [0, 0], [0, 1], [1, 1]];
     return figure;
   };
   // * *
   // * *
   var figureType4 = function(figure) {
-    figure.part_disps = [[0, 0], [1, 0], [1, 1], [0, 1]];
     figure.color = '#FA4C23';
+    figure.body = [[-1, 0], [0, 0], [0, 1], [-1, 1]];
+    figure.turn = function() { return true; };
     return figure;
   };
   // * * * *
   //
   var figureType5 = function(figure) {
-    figure.part_disps = [[0, 0], [1, 0], [2, 0], [3, 0]];
     figure.color = '#DF30D9';
+    figure.body = [[-1, 0], [0, 0], [1, 0], [2, 0]];
     return figure;
   };
   // * * *
   // *
   var figureType6 = function(figure) {
-    figure.part_disps = [[0, 0], [1, 0], [2, 0], [0, 1]];
     figure.color = '#F50000';
+    figure.body = [[-1, 0], [0, 0], [1, 0], [-1, 1]];
     return figure;
   };
   //   * *
   // * *
   var figureType7 = function(figure) {
-    figure.part_disps = [[1, 0], [2, 0], [0, 1], [1, 1]];
     figure.color = '#93E508';
+    figure.body = [[0, 0], [1, 0], [-1, 1], [0, 1]];
     return figure;
   };
 

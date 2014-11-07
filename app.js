@@ -37,16 +37,16 @@ $(document).ready(function() {
   $(document).on("keydown", function(event) {
     switch(event.which) {
       case 37: // left
-        figure.pullLeft(field);
+        figure.pullLeft(0);
         break;
       case 38: // up
         figure.turn();
         break;
       case 39: // right
-        figure.pullRight(field);
+        figure.pullRight(field.x_cells);
       break;
       case 40: // down
-        figure.pullDown();
+        figure.pullDown(field);
       break;
       default: return; // exit this handler for other keys
     };

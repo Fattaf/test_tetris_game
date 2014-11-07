@@ -20,28 +20,37 @@ var Field = function() {
   this.x_cells = 10;     // FIXME: refactoring
   this.y_cells = 16;     // FIXME: refactoring
 
+  var self = this;
+
   this.drawField = function(context) {
-    _drawBorder(context, this);
-    _drawBackgroundCells(context, this);
-    _drawFilledCells(context, this);
+    _drawBorder(context);
+    _drawBackgroundCells(context);
+    _drawFilledCells(context);
+  };
+
+  this.check_if_covered = function(shape) {
+    for(var i = 0; i < shape.length; i++) {
+      if (this.miniMap[shape[i][1]][shape[i][0]] == 1) { return true };
+    };
+    return false;
   };
 
   // private functions
-  var _drawBorder = function(context, field) {
+  var _drawBorder = function(context) {
     context.beginPath();
-    context.rect( field.position[0] - 3,
-                  field.position[1] - 3,
-                  (field.x_cells * field.disp) + 6,
-                  (field.y_cells * field.disp) + 6 )
+    context.rect( self.position[0] - 3,
+                  self.position[1] - 3,
+                  (self.x_cells * self.disp) + 6,
+                  (self.y_cells * self.disp) + 6 )
     addStroke(context, '#black', 3);
   };
 
-  var _drawBackgroundCells = function(context, field) {
+  var _drawBackgroundCells = function(context) {
     context.beginPath();
-    for (var i = 0; i < field.miniMap.length; i++) {
-      for(var j = 0; j < field.miniMap[i].length; j++) {
-        context.rect((field.disp * j) + field.position[0],
-                     (field.disp * i) + field.position[1],
+    for (var i = 0; i < self.miniMap.length; i++) {
+      for(var j = 0; j < self.miniMap[i].length; j++) {
+        context.rect((self.disp * j) + self.position[0],
+                     (self.disp * i) + self.position[1],
                      40, 40);
       };
     };
@@ -49,13 +58,13 @@ var Field = function() {
     addStroke(context, '#EDEDED', 1);
   };
 
-  var _drawFilledCells = function(context, field) {
+  var _drawFilledCells = function(context) {
     context.beginPath();
-    for (var i = 0; i < field.miniMap.length; i++) {
-      for(var j = 0; j < field.miniMap[i].length; j++) {
-        if (field.miniMap[i][j] == 1){
-          context.rect((field.disp * j) + field.position[0],
-                       (field.disp * i) + field.position[1],
+    for (var i = 0; i < self.miniMap.length; i++) {
+      for(var j = 0; j < self.miniMap[i].length; j++) {
+        if (self.miniMap[i][j] == 1){
+          context.rect((self.disp * j) + self.position[0],
+                       (self.disp * i) + self.position[1],
                        40, 40);
         };
       };
