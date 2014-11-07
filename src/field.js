@@ -28,11 +28,17 @@ var Field = function() {
     _drawFilledCells(context);
   };
 
-  this.check_if_covered = function(shape) {
+  this.checkIfCovered = function(shape) {
     for(var i = 0; i < shape.length; i++) {
       if (this.miniMap[shape[i][1]][shape[i][0]] == 1) { return true };
     };
     return false;
+  };
+
+  this.addToCover = function(shape) {
+   for(var i = 0; i < shape.length; i++) {
+      this.miniMap[shape[i][1]][shape[i][0]] = 1;
+    };
   };
 
   // private functions

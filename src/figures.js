@@ -13,6 +13,25 @@ var Figure = function() {
     addStroke(context, 'black', 2);
   };
 
+  // TODO: refactoring
+  this.countShape = function() {
+    var shape = [];
+    for(var i = 0; i < this.body.length; i++) {
+      shape.push([this.body[i][0] + this.position[0],
+                  this.body[i][1] + this.position[1]]);
+    };
+    return shape;
+  };
+  // TODO: refactoring
+  this.countDownShape = function() {
+    var shape = [];
+    for(var i = 0; i < this.body.length; i++) {
+      shape.push([this.body[i][0] + this.position[0],
+                  this.body[i][1] + this.position[1] + 1]);
+    };
+    return shape;
+  };
+
   // FIXME: take a look on rotation!!
   this.turn = function() {
     for(var i = 0; i < this.body.length; i++) {
@@ -33,21 +52,16 @@ var Figure = function() {
   };
 
   this.pullDown = function(field) {
-    if (!(_if_will_cover(field))) {
-      if (_find_max_y() + this.position[1] + 1 < field.y_cells) {
-        this.position[1] += 1;
-      };
-    };
+    if (_find_max_y() + this.position[1] + 1 >= field.y_cells) { return false; };
+    if (_if_will_cover(field)) { return false; };
+    this.position[1] += 1;
+    return true;
   };
 
   // private functions
   var _if_will_cover = function(field) {
-    var shape = [];
-    for(var i = 1; i < self.body.length; i++) {
-      shape.push([self.body[i][0] + self.position[0],
-                  self.body[i][1] + self.position[1] + 1]);
-    };
-    return field.check_if_covered(shape);
+    var shape = self.countDownShape();
+    return field.checkIfCovered(shape);
   };
 
   // TODO: refactoring

@@ -46,7 +46,10 @@ $(document).ready(function() {
         figure.pullRight(field.x_cells);
       break;
       case 40: // down
-        figure.pullDown(field);
+        if (figure.pullDown(field) == false) {
+          field.addToCover(figure.countShape());
+          figure = figureBuilder.build_random_figure();
+        };
       break;
       default: return; // exit this handler for other keys
     };
