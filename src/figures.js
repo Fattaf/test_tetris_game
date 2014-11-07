@@ -14,11 +14,8 @@ var Figure = function() {
                     this.figure_size[0],
                     this.figure_size[1] );
     };
-    context.fillStyle = this.color;
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = 'black';
-    context.stroke();
+    addFill(context, this.color);
+    addStroke(context, 'black', 2);
   };
 
   // FIXME: too big rotation !!
@@ -32,12 +29,42 @@ var Figure = function() {
     this.part_disps = tmp_disps;
   };
 
-  this.pull_left = function(Qll_down = function() {
+  this.pullLeft = function(field) {
+    if (_isOnField(field, this.position[0] - 1)) {
+      this.position[0] -= 1;
+    };
+  };
+
+  this.pullRight = function(field) {
+    if (_isOnField(field, this.position[0] + 1)) {
+      this.position[0] += 1;
+    };
+  };
+
+  this.pullDown = function() {
     // check if figure still on field
     // check if figure is not on built part
     this.position[1] += 1;
   };
 
+  // private functions
+  var _isOnField = function(field, position) {
+    return (position <= field.x_cells) && (position >= 0);
+  };
+
+  // all helpers
+  var addFill = function(context, color) {
+    context.fillStyle = color;
+    context.fill();
+  };
+
+  var addStroke = function(context, color, lineWidth) {
+    context.lineWidth = lineWidth;
+    context.strokeStyle = color;
+    context.stroke();
+  };
+
+  return this;
 };
 
 var FigureBuilder = function() {

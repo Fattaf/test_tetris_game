@@ -37,27 +37,20 @@ $(document).ready(function() {
   $(document).on("keydown", function(event) {
     switch(event.which) {
       case 37: // left
-        figure.pull_left();
-        redraw(figure, field, canvas, context);
+        figure.pullLeft(field);
         break;
-
       case 38: // up
         figure.turn();
-        redraw(figure, field, canvas, context);
         break;
-
       case 39: // right
-        figure.pull_right();
-        redraw(figure, field, canvas, context);
+        figure.pullRight(field);
       break;
-
       case 40: // down
-        figure.pull_down();
-        redraw(figure, field, canvas, context);
+        figure.pullDown();
       break;
-
       default: return; // exit this handler for other keys
-    }
+    };
+    redraw(figure, field, canvas, context);
   });
 
   // setTimeout(function() {

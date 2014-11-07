@@ -17,8 +17,8 @@ var Field = function() {
                   [0, 0, 0 ,1, 1, 1, 0, 0, 0, 0],
                   [0, 0, 1 ,1, 1, 1, 0, 0, 0, 0]];
   this.disp = 40;
-  this.x_cells = 40 * 10;     // FIXME: refactoring
-  this.y_cells = 40 * 16;     // FIXME: refactoring
+  this.x_cells = 10;     // FIXME: refactoring
+  this.y_cells = 16;     // FIXME: refactoring
 
   this.drawField = function(context) {
     _drawBorder(context, this);
@@ -31,9 +31,9 @@ var Field = function() {
     context.beginPath();
     context.rect( field.position[0] - 3,
                   field.position[1] - 3,
-                  field.x_cells + 6,
-                  field.y_cells + 6 )
-    add_stroke(context, '#black', 3);
+                  (field.x_cells * field.disp) + 6,
+                  (field.y_cells * field.disp) + 6 )
+    addStroke(context, '#black', 3);
   };
 
   var _drawBackgroundCells = function(context, field) {
@@ -45,8 +45,8 @@ var Field = function() {
                      40, 40);
       };
     };
-    add_fill(context, '#FFFFFF');
-    add_stroke(context, '#EDEDED', 1);
+    addFill(context, '#FFFFFF');
+    addStroke(context, '#EDEDED', 1);
   };
 
   var _drawFilledCells = function(context, field) {
@@ -60,16 +60,17 @@ var Field = function() {
         };
       };
     };
-    add_fill(context, '#9ED0FF');
-    add_stroke(context, 'black', 3);
+    addFill(context, '#9ED0FF');
+    addStroke(context, 'black', 3);
   };
 
-  var add_fill = function(context, color) {
+  // helpers
+  var addFill = function(context, color) {
     context.fillStyle = color;
     context.fill();
   };
 
-  var add_stroke = function(context, color, lineWidth) {
+  var addStroke = function(context, color, lineWidth) {
     context.lineWidth = lineWidth;
     context.strokeStyle = color;
     context.stroke();
