@@ -48,6 +48,7 @@ $(document).ready(function() {
       case 40: // down
         if (figure.pullDown(field) == false) {
           field.addToCover(figure.countShape());
+          field.handleFullCoveredLines();
           figure = figureBuilder.build_random_figure();
         };
       break;

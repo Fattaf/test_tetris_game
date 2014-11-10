@@ -41,7 +41,28 @@ var Field = function() {
     };
   };
 
+  this.handleFullCoveredLines = function() {
+    var etalon = [0,0,0,0,0,0,0,0,0,0];
+    for(var i = 0; i < this.miniMap.length; i++) {
+      if (_checkFullCoveredLine(this.miniMap[i])) {
+        this.miniMap.splice(i,1);
+        this.miniMap.unshift(etalon);
+      };
+    };
+  };
+
   // private functions
+  var _checkFullCoveredLine = function(line_array) {
+    var count = 0,
+        result = false;
+
+    for(var i = 0; i < line_array.length; i++) {
+      count += line_array[i];
+    };
+    if (count == line_array.length) { result = true; };
+    return result;
+  };
+
   var _drawBorder = function(context) {
     context.beginPath();
     context.rect( self.position[0] - 3,
