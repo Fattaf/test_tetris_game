@@ -51,6 +51,13 @@ var Field = function() {
     };
   };
 
+  this.isOverfilled = function() {
+    for(var i = 0; i < this.miniMap[1].length; i++) {
+      if(this.miniMap[1][i] > 0) { return true; };
+    };
+    return false;
+  };
+
   // private functions
   var _checkFullCoveredLine = function(line_array) {
     var count = 0,

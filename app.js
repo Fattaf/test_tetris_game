@@ -48,8 +48,9 @@ $(document).ready(function() {
       case 40: // down
         if (figure.pullDown(field) == false) {
           field.addToCover(figure.countShape());
-          field.handleFullCoveredLines();
           figure = figureBuilder.build_random_figure();
+          field.handleFullCoveredLines();
+          if (field.isOverfilled()) { alert('Game Over!!!'); };
         };
       break;
       default: return; // exit this handler for other keys
