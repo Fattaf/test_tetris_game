@@ -1,5 +1,5 @@
 var Figure = function(drawAdapter) {
-  this.position     = [5, 0];   //disps: [width, height]
+  this.position     = [5, 1];   //disps: [width, height]
   this.figure_size  = [40, 40];
   this.body         = NaN;
   this.color        = NaN;
@@ -12,7 +12,6 @@ var Figure = function(drawAdapter) {
     drawAdapter.addStroke(context, 'black', 2);
   };
 
-  // TODO: refactoring
   this.countShape = function() {
     var shape = [];
     for(var i = 0; i < this.body.length; i++) {
@@ -21,78 +20,67 @@ var Figure = function(drawAdapter) {
     };
     return shape;
   };
-  // TODO: refactoring
-  this.countDownShape = function() {
-    var shape = [];
-    for(var i = 0; i < this.body.length; i++) {
-      shape.push([this.body[i][0] + this.position[0],
-                  this.body[i][1] + this.position[1] + 1]);
-    };
-    return shape;
-  };
 
   // FIXME: take a look on rotation!!
-  this.turn = function() {
-    for(var i = 0; i < this.body.length; i++) {
-      this.body[i] = [this.body[i][1], -this.body[i][0]]
+  this.turn = function(min_edge, max_edge) {
+    if ((this.position[0] < max_edge - 1) && (this.position[0] > min_edge)) {
+      for(var i = 0; i < this.body.length; i++) {
+        this.body[i] = [this.body[i][1], -this.body[i][0]]
+      };
     };
   };
 
-  this.pullLeft = function(edge) {
-    if (_find_min_x() + this.position[0] - 1 >= edge) {
+  this.pullLeft = function(min_edge) {
+    var new_x = _find_min_x() + this.position[0] - 1;
+    if (new_x >= min_edge) {
       this.position[0] -= 1;
     };
   };
 
-  this.pullRight = function(edge) {
-    if (_find_max_x() + this.position[0] + 1 < edge) {
+  this.pullRight = function(max_edge) {
+    var new_x = _find_max_x() + this.position[0] + 1;
+    if (new_x < max_edge) {
       this.position[0] += 1;
     };
   };
 
   this.pullDown = function(field) {
     if (_find_max_y() + this.position[1] + 1 >= field.y_cells) { return false; };
-    if (_if_will_cover(field)) { return false; };
+    if (_ifWillCover(field)) { return false; };
     this.position[1] += 1;
     return true;
   };
 
   // private methods
 
-    var _if_will_cover = function(field) {
-      var shape = self.countDownShape();
-      return field.checkIfCovered(shape);
+    var _ifWillCover = function(field) {
+      var shape = self.countShape();
+      return field.isWillCover(shape);
     };
 
     // TODO: refactoring
     var _find_max_x = function() {
-      var max_x = self.body[0][0];
-      for(var i = 1; i < self.body.length; i++) {
-        if (max_x < self.body[i][0]) {
-          max_x = self.body[i][0];
-        };
+      var tmp_array = [];
+      for(var i = 0; i < self.body.length; i++) {
+        tmp_array.push(self.body[i][0])
       };
-      return max_x;
+      return Math.max.apply(null, tmp_array)
     };
 
     var _find_max_y = function() {
-      var max_y = self.body[0][1];
-      for(var i = 1; i < self.body.length; i++) {
-        if (max_y < self.body[i][1]) {
-          max_y = self.body[i][1];
-        };
+      var tmp_array = [];
+      for(var i = 0; i < self.body.length; i++) {
+        tmp_array.push(self.body[i][1])
       };
-      return max_y;
+      return Math.max.apply(null, tmp_array)
     };
 
     var _find_min_x = function() {
-      var min_x = self.body[0][0];
-      for(var i = 1; i < self.body.length; i++) {
-        if (min_x > self.body[i][0]) {
-          min_x = self.body[i][0];
-        };
+      var tmp_array = [];
+      for(var i = 0; i < self.body.length; i++) {
+        tmp_array.push(self.body[i][0])
       };
-      return min_x;
+      return Math.min.apply(null, tmp_array)
     };
 
   return this;

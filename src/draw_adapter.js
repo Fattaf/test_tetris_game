@@ -1,6 +1,6 @@
 var DrawAdapter = function(canvas_div) {
-  // this.canvas = canvas_div;
-  // this.context = canvas.getContext('2d');
+  this.canvas = canvas_div;
+  this.context = this.canvas.getContext('2d');
 
   this.addBorder = function(context, start_point, end_point, color, lineWidth) {
     context.beginPath();
