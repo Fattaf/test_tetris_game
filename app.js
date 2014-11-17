@@ -22,6 +22,7 @@ var Game = function() {
   };
 };
 
+// FIXME: broken
 var animate = function(game, figure, field, canvas, context) {
   var disp_step = 40;
 

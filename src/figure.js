@@ -21,8 +21,8 @@ var Figure = function(drawAdapter) {
     return shape;
   };
 
-  // FIXME: take a look on rotation!!
   this.turn = function(min_edge, max_edge) {
+    // FIXME IF center in filed!
     if ((this.position[0] < max_edge - 1) && (this.position[0] > min_edge)) {
       for(var i = 0; i < this.body.length; i++) {
         this.body[i] = [this.body[i][1], -this.body[i][0]]
