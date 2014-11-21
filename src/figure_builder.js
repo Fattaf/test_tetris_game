@@ -47,14 +47,15 @@ var FigureBuilder = function(drawAdapter) {
     var figureType5 = function(figure) {
       figure.color = '#DF30D9';
       figure.body = [[-1, 0], [0, 0], [1, 0], [2, 0]];
-      figure.turn = function() {
-        var tmp = null;
-        for(var i = 0; i < figure.body.length; i++) {
-          tmp = figure.body[i][0];
-          figure.body[i][0] = figure.body[i][1];
-          figure.body[i][1] = tmp;
+
+      figure.buildTurn = function() {
+        var new_body = []
+        for(var i = 0; i < this.body.length; i++) {
+          new_body.push([this.body[i][1], this.body[i][0]])
         };
+        return new_body;
       };
+
       return figure;
     };
     // * * *

@@ -32,7 +32,7 @@ var Field = function(drawAdapter) {
 
   this.isWillCover = function(shape) {
     for(var i = 0; i < shape.length; i++) {
-      var element = this.miniMap[shape[i][1] + 1][shape[i][0]];
+      var element = this.miniMap[shape[i][1]][shape[i][0]];
       if (element == 1) { return true };
     };
     return false;

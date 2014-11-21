@@ -33,10 +33,14 @@ var DrawAdapter = function(canvas_div) {
   };
 
   this.addFigure = function(figure) {
+    // FIXME: do something with null_x and null_y
+    var null_x = 10;
+    var null_y = 10;
+
     this.context.beginPath();
     for(var i = 0; i < figure.body.length; i++) {
-      var new_x = Math.abs((figure.position[0] + figure.body[i][0]) * figure.figure_size[0]),
-          new_y = Math.abs((figure.position[1] + figure.body[i][1]) * figure.figure_size[1]);
+      var new_x = null_x + Math.abs((figure.position[0] + figure.body[i][0]) * figure.figure_size[0]),
+          new_y = null_y + Math.abs((figure.position[1] + figure.body[i][1]) * figure.figure_size[1]);
       this.context.rect(new_x, new_y, figure.figure_size[0], figure.figure_size[1]);
     };
   };

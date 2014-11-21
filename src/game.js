@@ -28,13 +28,13 @@ var Game = function(canvas) {
   this.keydownListener = function(key) {
     switch(key) {
       case 37: // left
-        this.figure.pullLeft(0);
+        this.figure.pullLeft(0, this.field);
         break;
       case 38: // up
-        this.figure.turn(0, this.field.x_cells);
+        this.figure.turn(0, this.field.x_cells, this.field);
         break;
       case 39: // right
-        this.figure.pullRight(this.field.x_cells);
+        this.figure.pullRight(this.field.x_cells, this.field);
       break;
       case 40: // down
         if (this.figure.pullDown(this.field) == false) {
