@@ -6,10 +6,10 @@ var Figure = function(drawAdapter) {
 
   var self = this;
 
-  this.drawFigure = function(context) {
-    drawAdapter.addFigure(context, this);
-    drawAdapter.addFill(context, this.color);
-    drawAdapter.addStroke(context, 'black', 2);
+  this.drawFigure = function() {
+    drawAdapter.addFigure(this);
+    drawAdapter.addFill(this.color);
+    drawAdapter.addStroke('black', 2);
   };
 
   this.countShape = function() {

@@ -1,33 +1,33 @@
 var Field = function(drawAdapter) {
   this.position = [10, 10];
-  this.miniMap = [[0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 0, 1, 0, 0, 0, 0],
-                  [0, 0, 0 ,0, 1, 1, 0, 0, 0, 0],
-                  [0, 0, 0 ,1, 1, 1, 0, 0, 0, 0],
-                  [0, 0, 1 ,1, 1, 1, 0, 0, 0, 0]];
+  this.miniMap = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+                  [0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+                  [0, 0, 1, 1, 1, 1, 0, 0, 0, 0]];
   this.disp = 40;
   this.x_cells = 10;     // FIXME: refactoring
   this.y_cells = 16;     // FIXME: refactoring
 
   var self = this;
 
-  this.drawField = function(context) {
+  this.drawField = function() {
     var end_point = [(self.x_cells * self.disp), (self.y_cells * self.disp)]
 
-    drawAdapter.addBorder(context, self.position, end_point, 'black', 3);
-    drawAdapter.addFieldBackground(context, this);
-    drawAdapter.drawFieldMarkedCells(context, this);
+    drawAdapter.addBorder(self.position, end_point, 'black', 3);
+    drawAdapter.addFieldBackground(this);
+    drawAdapter.drawFieldMarkedCells(this);
   };
 
   this.isWillCover = function(shape) {
