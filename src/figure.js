@@ -59,7 +59,6 @@ var Figure = function(drawAdapter) {
     return new_body;
   };
 
-  // FIXME: shape can be over the field
   this.countShape = function(step) {
     if (step === undefined) { step = [0, 0] };
     var shape = [];

@@ -23,7 +23,28 @@ var Game = function(canvas) {
     alert('Game Over!!!');
   };
 
-  this.animate = function() {};
+  this.animate = function() {
+    var self = this;
+
+    if (this.figure.pullDown(this.field) == false) {
+      // TODO: refactoring
+      this.field.addToCover(this.figure.countShape());
+
+      var removed_lines = this.field.handleFullCoveredLines();
+      this.update_score(removed_lines);
+
+      this.figure = this.figureBuilder.build_random_figure();
+      if (this.field.isOverfilled()) { this.reset_game(); };
+    };
+
+    this.redraw();
+
+    setTimeout(function() {
+      self.animate();
+    }, 1000);
+
+    return true;
+  };
 
   this.keydownListener = function(key) {
     switch(key) {
@@ -40,10 +61,10 @@ var Game = function(canvas) {
         if (this.figure.pullDown(this.field) == false) {
           this.field.addToCover(this.figure.countShape());
 
-          this.figure = this.figureBuilder.build_random_figure();
-
           var removed_lines = this.field.handleFullCoveredLines();
           this.update_score(removed_lines);
+
+          this.figure = this.figureBuilder.build_random_figure();
 
           if (this.field.isOverfilled()) { this.reset_game(); };
         };
