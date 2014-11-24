@@ -45,8 +45,8 @@ var Figure = function(drawAdapter) {
   this.pullDown = function(field) {
     var new_y = _find_max_y() + this.position[1] + 1;
 
-    if (_ifWillCover(field, [0, 1])) { return false; };
     if (new_y >= field.y_cells) { return false; };
+    if (_ifWillCover(field, [0, 1])) { return false; };
     this.position[1] += 1;
     return true;
   };
@@ -59,21 +59,23 @@ var Figure = function(drawAdapter) {
     return new_body;
   };
 
+  // FIXME: shape can be over the field
+  this.countShape = function(step) {
+    if (step === undefined) { step = [0, 0] };
+    var shape = [];
+    for(var i = 0; i < this.body.length; i++) {
+      shape.push([this.body[i][0] + step[0] + this.position[0],
+                  this.body[i][1] + step[1] + this.position[1]]);
+    };
+    return shape;
+  };
+
   // private methods
     var _ifWillCover = function(field, step) {
-      var shape = _countShape(step);
+      var shape = self.countShape(step);
       return field.isWillCover(shape);
     };
 
-    var _countShape = function(step) {
-      if (step === undefined) { step = [0, 0] };
-      var shape = [];
-      for(var i = 0; i < self.body.length; i++) {
-        shape.push([self.body[i][0] + step[0] + self.position[0],
-                    self.body[i][1] + step[1] + self.position[1]]);
-      };
-      return shape;
-    };
 
     var _countAnyShape = function(body) {
       var shape = [];
