@@ -6,9 +6,11 @@ var Game = function(canvas) {
   this.figureBuilder   = new FigureBuilder(this.drawAdapter);
   this.figure          = this.figureBuilder.build_random_figure();
 
+  var self = this;
 
-  this.update_score = function(removed_lines) {
-    this.score += removed_lines * 10;
+  // TODO: refactoring score counts !
+  this.update_score = function(count) {
+    this.score += count;
   };
 
   this.redraw = function() {
@@ -27,21 +29,14 @@ var Game = function(canvas) {
     var self = this;
 
     if (this.figure.pullDown(this.field) == false) {
-      // TODO: refactoring
-      this.field.addToCover(this.figure.countShape());
-
-      var removed_lines = this.field.handleFullCoveredLines();
-      this.update_score(removed_lines);
-
-      this.figure = this.figureBuilder.build_random_figure();
-      if (this.field.isOverfilled()) { this.reset_game(); };
+      handleLanding();
     };
 
     this.redraw();
 
     setTimeout(function() {
       self.animate();
-    }, 1000);
+    }, 1000 - this.score * 2);
 
     return true;
   };
@@ -59,17 +54,24 @@ var Game = function(canvas) {
       break;
       case 40: // down
         if (this.figure.pullDown(this.field) == false) {
-          this.field.addToCover(this.figure.countShape());
-
-          var removed_lines = this.field.handleFullCoveredLines();
-          this.update_score(removed_lines);
-
-          this.figure = this.figureBuilder.build_random_figure();
-
-          if (this.field.isOverfilled()) { this.reset_game(); };
+          handleLanding();
         };
       break;
       default: return; // exit this handler for other keys
     };
   }
+
+  // private methods
+    var handleLanding = function() {
+      self.field.addToCover(self.figure.countShape());
+      self.update_score(1);
+
+      var removed_lines = self.field.handleFullCoveredLines();
+      self.update_score(removed_lines * 10);
+
+      self.figure = self.figureBuilder.build_random_figure();
+      if (self.field.isOverfilled()) { self.reset_game(); };
+    };
+
+  return this;
 };
