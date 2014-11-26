@@ -26,7 +26,8 @@ var Game = function(canvas) {
 
   // TODO: implement
   this.reset_game = function() {
-    alert('Game Over!!!');
+    console.log('Game Over!!!');
+    throw "exit";
   };
 
   this.animate = function() {
@@ -72,11 +73,21 @@ var Game = function(canvas) {
 
       var removed_lines = self.field.handleFullCoveredLines();
       self.update_score(removed_lines * 10);
+      giveEncourage(removed_lines);
 
       self.figure = self.next_figure;
       self.next_figure = self.figureBuilder.build_random_figure();
       if (self.field.isOverfilled()) { self.reset_game(); };
     };
+
+    var giveEncourage = function(removed_lines) {
+      if (removed_lines == 2) { simpleEncourage(); };
+      if (removed_lines >= 3) { greateEncourage(); };
+    };
+
+    // TODO: implement
+    var simpleEncourage = function() { console.log('Good!'); };
+    var greateEncourage = function() { console.log('Cool!'); };
 
   return this;
 };
