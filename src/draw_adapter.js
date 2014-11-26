@@ -32,10 +32,10 @@ var DrawAdapter = function(canvas_div) {
     this.context.stroke();
   };
 
-  this.addFigure = function(figure) {
+  this.addFigure = function(figure, null_x, null_y) {
     // FIXME: do something with null_x and null_y
-    var null_x = 10;
-    var null_y = 10;
+    if (null_x === undefined) { null_x = 10; };
+    if (null_y === undefined) { null_y = 10; };
 
     this.context.beginPath();
     for(var i = 0; i < figure.body.length; i++) {

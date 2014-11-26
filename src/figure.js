@@ -6,8 +6,8 @@ var Figure = function(drawAdapter) {
 
   var self = this;
 
-  this.drawFigure = function() {
-    drawAdapter.addFigure(this);
+  this.drawFigure = function(disp_x, disp_y) {
+    drawAdapter.addFigure(this, disp_x, disp_y);
     drawAdapter.addFill(this.color);
     drawAdapter.addStroke('black', 2);
   };

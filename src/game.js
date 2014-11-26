@@ -4,6 +4,7 @@ var Game = function(canvas) {
   this.drawAdapter     = new DrawAdapter(canvas);
   this.field           = new Field(this.drawAdapter);
   this.figureBuilder   = new FigureBuilder(this.drawAdapter);
+  this.next_figure     = this.figureBuilder.build_random_figure();
   this.figure          = this.figureBuilder.build_random_figure();
 
   var self = this;
@@ -17,10 +18,13 @@ var Game = function(canvas) {
     this.drawAdapter.clear_canvas();
 
     this.field.drawField();
-    this.figure.drawFigure();
+    this.next_figure.drawFigure(270, 100);
+    this.figure.drawFigure(10, 10);
+
     this.drawAdapter.addScore(this.score);
   };
 
+  // TODO: implement
   this.reset_game = function() {
     alert('Game Over!!!');
   };
@@ -69,7 +73,8 @@ var Game = function(canvas) {
       var removed_lines = self.field.handleFullCoveredLines();
       self.update_score(removed_lines * 10);
 
-      self.figure = self.figureBuilder.build_random_figure();
+      self.figure = self.next_figure;
+      self.next_figure = self.figureBuilder.build_random_figure();
       if (self.field.isOverfilled()) { self.reset_game(); };
     };
 
