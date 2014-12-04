@@ -1,5 +1,7 @@
-var Game = function(canvas) {
+var Game = function(canvas, imgs_bucket) {
   this.score = 0;
+  this.is_active = true;
+  this.imgs_bucket = imgs_bucket;
 
   this.drawAdapter     = new DrawAdapter(canvas);
   this.field           = new Field(this.drawAdapter);
@@ -15,6 +17,8 @@ var Game = function(canvas) {
   };
 
   this.redraw = function() {
+    if (this.is_active == false) { return false; };
+
     this.drawAdapter.clear_canvas();
 
     this.field.drawField();
@@ -25,12 +29,14 @@ var Game = function(canvas) {
   };
 
   // TODO: implement
-  this.reset_game = function() {
+  this.gameOver = function() {
+    this.is_active = false;
+    this.drawAdapter.draw_image(this.imgs_bucket['game_over']);
     console.log('Game Over!!!');
-    throw "exit";
   };
 
   this.animate = function() {
+    if (this.is_active == false) { return false; };
     var self = this;
 
     if (this.figure.pullDown(this.field) == false) {
@@ -47,6 +53,8 @@ var Game = function(canvas) {
   };
 
   this.keydownListener = function(key) {
+    if (this.is_active == false) { return false; };
+
     switch(key) {
       case 37: // left
         this.figure.pullLeft(0, this.field);
@@ -77,7 +85,7 @@ var Game = function(canvas) {
 
       self.figure = self.next_figure;
       self.next_figure = self.figureBuilder.build_random_figure();
-      if (self.field.isOverfilled()) { self.reset_game(); };
+      if (self.field.isOverfilled()) { self.gameOver(); };
     };
 
     var giveEncourage = function(removed_lines) {

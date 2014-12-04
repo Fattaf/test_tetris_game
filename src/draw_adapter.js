@@ -2,6 +2,16 @@ var DrawAdapter = function(canvas_div) {
   this.canvas = canvas_div;
   this.context = this.canvas.getContext('2d');
 
+  this.draw_image = function(src) {
+    var imageObj = new Image();
+    var self = this;
+
+    imageObj.onload = function() {
+      self.context.drawImage(imageObj, 69, 50);
+    };
+    imageObj.src = src;
+  };
+
   this.clear_canvas = function() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
