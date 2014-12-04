@@ -6,10 +6,18 @@
     <title>Test Tetris</title>
     <meta name="description" content="The HTML5 Tetris">
     <meta name="author" content="Andrew Nashkolniy">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <style>
+      .playground_btn {
+        display: none;
+       }
+    </style>
   </head>
 
   <body>
-    <canvas id='playground' width="600" height="700"></canvas>
+    <canvas id='playground' width="620" height="660"></canvas>
+    <button id='restart_btn' class='playground_btn'>Restart</button>
+    <button id='pause_btn' class='playground_btn'>Pause</button>
 
     <script src="libs/kinetic-v5.1.0.min.js"></script>
     <script src="libs/jquery-2.1.1.min.js"></script>

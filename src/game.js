@@ -15,7 +15,7 @@ var Game = function(canvas, imgs_bucket) {
     draw_adapter.clear_canvas();
 
     field.drawField();
-    next_figure.drawFigure(270, 100);
+    next_figure.drawFigure(295, 150);
     figure.drawFigure(10, 10);
 
     draw_adapter.addScore(this.score);

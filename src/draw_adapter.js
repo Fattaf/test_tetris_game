@@ -6,7 +6,7 @@ var DrawAdapter = function(canvas_div) {
     var imageObj = new Image();
     var self = this;
 
-    imageObj.onload = function() { context.drawImage(imageObj, 69, 50); };
+    imageObj.onload = function() { context.drawImage(imageObj, 70, 50); };
     imageObj.src = src;
   };
 
@@ -14,10 +14,10 @@ var DrawAdapter = function(canvas_div) {
     context.clearRect(0, 0, canvas.width, canvas.height);
   };
 
-  // FIXME: change font
   this.addScore = function(score) {
-    context.font = 'italic 30pt Calibri';
-    context.fillText('Score: ' + score, 420, 100);
+    context.font = '30pt Roboto sans-serif';
+    context.fillStyle = '#898181';
+    context.fillText('Score: ' + score, 450, 100);
   };
 
   this.addBorder = function(start_point, end_point, color, lineWidth) {

@@ -49,9 +49,9 @@ var FigureBuilder = function(drawAdapter) {
       figure.body = [[-1, 0], [0, 0], [1, 0], [2, 0]];
 
       figure.buildTurn = function() {
-        var new_body = []
+        var new_body = [];
         for(var i = 0; i < this.body.length; i++) {
-          new_body.push([this.body[i][1], this.body[i][0]])
+          new_body.push([this.body[i][1], this.body[i][0]]);
         };
         return new_body;
       };
