@@ -4,21 +4,21 @@ var Game = function(canvas, imgs_bucket) {
   this.imgs_bucket = imgs_bucket;
 
   // private attributes
-  var drawAdapter     = new DrawAdapter(canvas);
-  var field           = new Field(drawAdapter);
-  var figureBuilder   = new FigureBuilder(drawAdapter);
-  var next_figure     = figureBuilder.build_random_figure();
-  var figure          = figureBuilder.build_random_figure();
+  var draw_adapter    = new DrawAdapter(canvas);
+  var field           = new Field(draw_adapter);
+  var figure_builder  = new FigureBuilder(draw_adapter);
+  var next_figure     = figure_builder.build_random_figure();
+  var figure          = figure_builder.build_random_figure();
   var self            = this;
 
   this.redraw = function() {
-    drawAdapter.clear_canvas();
+    draw_adapter.clear_canvas();
 
     field.drawField();
     next_figure.drawFigure(270, 100);
     figure.drawFigure(10, 10);
 
-    drawAdapter.addScore(this.score);
+    draw_adapter.addScore(this.score);
   };
 
   this.animate = function() {
@@ -57,7 +57,7 @@ var Game = function(canvas, imgs_bucket) {
   // private methods
     var gameOver = function() {
       self.is_active = false;
-      drawAdapter.draw_image(self.imgs_bucket['game_over']);
+      draw_adapter.draw_image(self.imgs_bucket['game_over']);
     };
 
     var addScorePerLine = function(lines_count) {
@@ -68,9 +68,9 @@ var Game = function(canvas, imgs_bucket) {
       self.score += 1;
     };
 
-    var renew_figure = function() {
+    var renewFigure = function() {
       figure = next_figure;
-      next_figure = figureBuilder.build_random_figure();
+      next_figure = figure_builder.build_random_figure();
     };
 
     var giveEncourage = function(removed_lines) {
@@ -80,9 +80,12 @@ var Game = function(canvas, imgs_bucket) {
 
     // TODO: implement
     var simpleEncourage = function() { console.log('Good!'); };
+    // TODO: implement
     var greateEncourage = function() { console.log('Cool!'); };
 
-    var handleRemovedLinesScore = function(removed_lines) {
+    var handleRemovingLines = function() {
+      var removed_lines = field.handleFullCoveredLines();
+
       addScorePerLine(removed_lines);
       giveEncourage(removed_lines);
     };
@@ -91,9 +94,8 @@ var Game = function(canvas, imgs_bucket) {
       field.addToCover(figure.countShape());
       addScorePerFigure();
 
-      var removed_lines = field.handleFullCoveredLines();
-      handleRemovedLinesScore(removed_lines);
-      renew_figure();
+      handleRemovingLines();
+      renewFigure();
 
       if (field.isOverfilled()) { gameOver(); };
     };
