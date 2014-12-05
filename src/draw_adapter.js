@@ -42,18 +42,16 @@ var DrawAdapter = function(canvas_div) {
 
   this.addFigure = function(figure, null_x, null_y) {
     // FIXME: do something with null_x and null_y
-    if (null_x === undefined) { null_x = 10; };
-    if (null_y === undefined) { null_y = 10; };
-
-    var new_x = null,
-        new_y = null;
+    if (null_x === undefined) { null_x = 10; }
+    if (null_y === undefined) { null_y = 10; }
 
     context.beginPath();
     for(var i = 0; i < figure.body.length; i++) {
-      new_x = null_x + Math.abs((figure.position[0] + figure.body[i][0]) * figure.figure_size[0]),
-      new_y = null_y + Math.abs((figure.position[1] + figure.body[i][1]) * figure.figure_size[1]);
-      context.rect(new_x, new_y, figure.figure_size[0], figure.figure_size[1]);
-    };
+      context.rect( null_x + count_position(figure, 0, i),
+                    null_y + count_position(figure, 1, i),
+                    figure.figure_size[0],
+                    figure.figure_size[1]);
+    }
   };
 
   this.addFieldBackground = function(field) {
@@ -68,7 +66,7 @@ var DrawAdapter = function(canvas_div) {
   this.drawFieldMarkedCells = function(field) {
     context.beginPath();
     forEachInMatrix(field, function(field, i, j) {
-      if (field.miniMap[i][j] == 1) { buildRectangle(field, i, j); };
+      if (field.miniMap[i][j] == 1) { buildRectangle(field, i, j); }
     });
     this.addFill('#9ED0FF');
     this.addStroke('black', 3);
@@ -85,8 +83,13 @@ var DrawAdapter = function(canvas_div) {
       for (var i = 0; i < field.miniMap.length; i++) {
         for(var j = 0; j < field.miniMap[i].length; j++) {
           block(field, i, j);
-        };
-      };
+        }
+      }
+    };
+
+    var count_position = function(figure, index, i) {
+      var sum = figure.position[index] + figure.body[i][index];
+      return Math.abs(sum * figure.figure_size[index]);
     };
 
   return this;

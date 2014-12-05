@@ -52,7 +52,7 @@ var FigureBuilder = function(drawAdapter) {
         var new_body = [];
         for(var i = 0; i < this.body.length; i++) {
           new_body.push([this.body[i][1], this.body[i][0]]);
-        };
+        }
         return new_body;
       };
 

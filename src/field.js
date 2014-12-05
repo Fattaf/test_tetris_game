@@ -23,7 +23,7 @@ var Field = function(drawAdapter) {
   var self = this;
 
   this.drawField = function() {
-    var end_point = [(self.x_cells * self.disp), (self.y_cells * self.disp)]
+    var end_point = [(self.x_cells * self.disp), (self.y_cells * self.disp)];
 
     drawAdapter.addBorder(self.position, end_point, 'black', 3);
     drawAdapter.addFieldBackground(this);
@@ -33,15 +33,15 @@ var Field = function(drawAdapter) {
   this.isWillCover = function(shape) {
     for(var i = 0; i < shape.length; i++) {
       var element = this.miniMap[shape[i][1]][shape[i][0]];
-      if (element == 1) { return true };
-    };
+      if (element == 1) { return true; }
+    }
     return false;
   };
 
   this.addToCover = function(shape) {
    for(var i = 0; i < shape.length; i++) {
       this.miniMap[shape[i][1]][shape[i][0]] = 1;
-    };
+    }
   };
 
   this.handleFullCoveredLines = function() {
@@ -52,15 +52,15 @@ var Field = function(drawAdapter) {
         this.miniMap.splice(i,1);
         this.miniMap.unshift(etalon);
         removed_lines++;
-      };
-    };
+      }
+    }
     return removed_lines;
   };
 
   this.isOverfilled = function() {
     for(var i = 0; i < this.miniMap[1].length; i++) {
-      if(this.miniMap[1][i] > 0) { return true; };
-    };
+      if(this.miniMap[1][i] > 0) { return true; }
+    }
     return false;
   };
 
@@ -68,7 +68,7 @@ var Field = function(drawAdapter) {
   // private methods
     var _checkFullCoveredLine = function(line_array) {
       var count = sumLine(line_array);
-      if (count == line_array.length) { return true; };
+      if (count == line_array.length) { return true; }
       return false;
     };
 
@@ -76,7 +76,7 @@ var Field = function(drawAdapter) {
       var count = 0;
       for(var i = 0; i < line_array.length; i++) {
         count += line_array[i];
-      };
+      }
       return count;
     };
 

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Test Tetris</title>
+    <meta name="description" content="The HTML5 Tetris">
+    <meta name="author" content="Andrew Nashkolniy">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  </head>
+
+  <body>
+    <div class='container-fluid'>
+      <div class='row'>
+        <div class='col-md-12 text-center'>
+          <small>'Helo, world' Tetris. Apache License. Andrew Nashkolniy ©.</small>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class='row'>
+        <div class='col-md-12 text-center'>
+          <canvas id='playground' width="620" height="660"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <link rel="stylesheet" href='libs/css/bootstrap.min.css'></link>
+    <script src="libs/kinetic-v5.1.0.min.js"></script>
+    <script src="libs/jquery-2.1.1.min.js"></script>
+
+    <script src="src/draw_adapter.js"></script>
+    <script src="src/field.js"></script>
+    <script src="src/figure.js"></script>
+    <script src="src/figure_builder.js"></script>
+    <script src="src/game.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
