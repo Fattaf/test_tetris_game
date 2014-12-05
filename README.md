@@ -3,8 +3,13 @@ test_tetris_game
 
 'Hello, world!' Tetris
 
-main file: index.html
-dev main file: dev_index.html
+main js file:   oindex.min.js
+main html file: index.html
+---
 
+dev main file: dev_index.html
+---
+Package Manager Used: grunt
+---
 To compile main script:
 - $: grunt
