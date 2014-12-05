@@ -47,8 +47,8 @@ var DrawAdapter = function(canvas_div) {
 
     context.beginPath();
     for(var i = 0; i < figure.body.length; i++) {
-      context.rect( count_position(null_x, 0, i),
-                    count_position(null_y, 1, i),
+      context.rect( null_x + count_position(figure, 0, i),
+                    null_y + count_position(figure, 1, i),
                     figure.figure_size[0],
                     figure.figure_size[1]);
     }
@@ -87,10 +87,9 @@ var DrawAdapter = function(canvas_div) {
       }
     };
 
-    var count_position = function(null_val, index, i) {
-      var sum = figure.position[index] + figure.body[i][index],
-          figure_size = Math.abs(sum * figure.figure_size[index]);
-      return null_val + figure_size;
+    var count_position = function(figure, index, i) {
+      var sum = figure.position[index] + figure.body[i][index];
+      return Math.abs(sum * figure.figure_size[index]);
     };
 
   return this;

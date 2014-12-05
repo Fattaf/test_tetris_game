@@ -42,18 +42,16 @@ var DrawAdapter = function(canvas_div) {
 
   this.addFigure = function(figure, null_x, null_y) {
     // FIXME: do something with null_x and null_y
-    if (null_x === undefined) { null_x = 10; };
-    if (null_y === undefined) { null_y = 10; };
-
-    var new_x = null,
-        new_y = null;
+    if (null_x === undefined) { null_x = 10; }
+    if (null_y === undefined) { null_y = 10; }
 
     context.beginPath();
     for(var i = 0; i < figure.body.length; i++) {
-      new_x = null_x + Math.abs((figure.position[0] + figure.body[i][0]) * figure.figure_size[0]),
-      new_y = null_y + Math.abs((figure.position[1] + figure.body[i][1]) * figure.figure_size[1]);
-      context.rect(new_x, new_y, figure.figure_size[0], figure.figure_size[1]);
-    };
+      context.rect( null_x + count_position(figure, 0, i),
+                    null_y + count_position(figure, 1, i),
+                    figure.figure_size[0],
+                    figure.figure_size[1]);
+    }
   };
 
   this.addFieldBackground = function(field) {
@@ -68,7 +66,7 @@ var DrawAdapter = function(canvas_div) {
   this.drawFieldMarkedCells = function(field) {
     context.beginPath();
     forEachInMatrix(field, function(field, i, j) {
-      if (field.miniMap[i][j] == 1) { buildRectangle(field, i, j); };
+      if (field.miniMap[i][j] == 1) { buildRectangle(field, i, j); }
     });
     this.addFill('#9ED0FF');
     this.addStroke('black', 3);
@@ -85,8 +83,13 @@ var DrawAdapter = function(canvas_div) {
       for (var i = 0; i < field.miniMap.length; i++) {
         for(var j = 0; j < field.miniMap[i].length; j++) {
           block(field, i, j);
-        };
-      };
+        }
+      }
+    };
+
+    var count_position = function(figure, index, i) {
+      var sum = figure.position[index] + figure.body[i][index];
+      return Math.abs(sum * figure.figure_size[index]);
     };
 
   return this;
@@ -116,7 +119,7 @@ var DrawAdapter = function(canvas_div) {
   var self = this;
 
   this.drawField = function() {
-    var end_point = [(self.x_cells * self.disp), (self.y_cells * self.disp)]
+    var end_point = [(self.x_cells * self.disp), (self.y_cells * self.disp)];
 
     drawAdapter.addBorder(self.position, end_point, 'black', 3);
     drawAdapter.addFieldBackground(this);
@@ -126,15 +129,15 @@ var DrawAdapter = function(canvas_div) {
   this.isWillCover = function(shape) {
     for(var i = 0; i < shape.length; i++) {
       var element = this.miniMap[shape[i][1]][shape[i][0]];
-      if (element == 1) { return true };
-    };
+      if (element == 1) { return true; }
+    }
     return false;
   };
 
   this.addToCover = function(shape) {
    for(var i = 0; i < shape.length; i++) {
       this.miniMap[shape[i][1]][shape[i][0]] = 1;
-    };
+    }
   };
 
   this.handleFullCoveredLines = function() {
@@ -145,15 +148,15 @@ var DrawAdapter = function(canvas_div) {
         this.miniMap.splice(i,1);
         this.miniMap.unshift(etalon);
         removed_lines++;
-      };
-    };
+      }
+    }
     return removed_lines;
   };
 
   this.isOverfilled = function() {
     for(var i = 0; i < this.miniMap[1].length; i++) {
-      if(this.miniMap[1][i] > 0) { return true; };
-    };
+      if(this.miniMap[1][i] > 0) { return true; }
+    }
     return false;
   };
 
@@ -161,7 +164,7 @@ var DrawAdapter = function(canvas_div) {
   // private methods
     var _checkFullCoveredLine = function(line_array) {
       var count = sumLine(line_array);
-      if (count == line_array.length) { return true; };
+      if (count == line_array.length) { return true; }
       return false;
     };
 
@@ -169,7 +172,7 @@ var DrawAdapter = function(canvas_div) {
       var count = 0;
       for(var i = 0; i < line_array.length; i++) {
         count += line_array[i];
-      };
+      }
       return count;
     };
 
@@ -190,12 +193,12 @@ var DrawAdapter = function(canvas_div) {
   };
 
   this.turn = function(min_edge, max_edge, field) {
-    if ((this.position[0] >= max_edge - 1) || (this.position[0] <= min_edge)) { return false; };
+    if ((this.position[0] >= max_edge - 1) || (this.position[0] <= min_edge)) { return false; }
 
     var tmp_body = this.buildTurn(),
            shape = _countAnyShape(tmp_body);
 
-    if (field.isWillCover(shape)) { return false; };
+    if (field.isWillCover(shape)) { return false; }
 
     this.body = tmp_body;
     return true;
@@ -204,8 +207,8 @@ var DrawAdapter = function(canvas_div) {
   this.pullLeft = function(min_edge, field) {
     var new_x = _find_min_x() + this.position[0] - 1;
 
-    if (_ifWillCover(field, [-1, 0])) { return false; };
-    if (new_x < min_edge) { return false; };
+    if (_ifWillCover(field, [-1, 0])) { return false; }
+    if (new_x < min_edge) { return false; }
     this.position[0] -= 1;
     return true;
   };
@@ -213,8 +216,8 @@ var DrawAdapter = function(canvas_div) {
   this.pullRight = function(max_edge, field) {
     var new_x = _find_max_x() + this.position[0] + 1;
 
-    if (_ifWillCover(field, [1, 0])) { return false; };
-    if (new_x >= max_edge) { return false; };
+    if (_ifWillCover(field, [1, 0])) { return false; }
+    if (new_x >= max_edge) { return false; }
     this.position[0] += 1;
     return true;
   };
@@ -222,8 +225,8 @@ var DrawAdapter = function(canvas_div) {
   this.pullDown = function(field) {
     var new_y = _find_max_y() + this.position[1] + 1;
 
-    if (new_y >= field.y_cells) { return false; };
-    if (_ifWillCover(field, [0, 1])) { return false; };
+    if (new_y >= field.y_cells) { return false; }
+    if (_ifWillCover(field, [0, 1])) { return false; }
     this.position[1] += 1;
     return true;
   };
@@ -232,17 +235,17 @@ var DrawAdapter = function(canvas_div) {
     var new_body = [];
     for(var i = 0; i < this.body.length; i++) {
       new_body.push([this.body[i][1], -this.body[i][0]]);
-    };
+    }
     return new_body;
   };
 
   this.countShape = function(step) {
-    if (step === undefined) { step = [0, 0] };
+    if (step === undefined) { step = [0, 0]; }
     var shape = [];
     for(var i = 0; i < this.body.length; i++) {
       shape.push([this.body[i][0] + step[0] + this.position[0],
                   this.body[i][1] + step[1] + this.position[1]]);
-    };
+    }
     return shape;
   };
 
@@ -258,7 +261,7 @@ var DrawAdapter = function(canvas_div) {
       for(var i = 0; i < body.length; i++) {
         shape.push([body[i][0] + self.position[0],
                     body[i][1] + self.position[1]]);
-      };
+      }
       return shape;
     };
 
@@ -266,25 +269,25 @@ var DrawAdapter = function(canvas_div) {
     var _find_max_x = function() {
       var tmp_array = [];
       for(var i = 0; i < self.body.length; i++) {
-        tmp_array.push(self.body[i][0])
-      };
-      return Math.max.apply(null, tmp_array)
+        tmp_array.push(self.body[i][0]);
+      }
+      return Math.max.apply(null, tmp_array);
     };
 
     var _find_max_y = function() {
       var tmp_array = [];
       for(var i = 0; i < self.body.length; i++) {
-        tmp_array.push(self.body[i][1])
-      };
-      return Math.max.apply(null, tmp_array)
+        tmp_array.push(self.body[i][1]);
+      }
+      return Math.max.apply(null, tmp_array);
     };
 
     var _find_min_x = function() {
       var tmp_array = [];
       for(var i = 0; i < self.body.length; i++) {
-        tmp_array.push(self.body[i][0])
-      };
-      return Math.min.apply(null, tmp_array)
+        tmp_array.push(self.body[i][0]);
+      }
+      return Math.min.apply(null, tmp_array);
     };
 
   return this;
@@ -343,7 +346,7 @@ var DrawAdapter = function(canvas_div) {
         var new_body = [];
         for(var i = 0; i < this.body.length; i++) {
           new_body.push([this.body[i][1], this.body[i][0]]);
-        };
+        }
         return new_body;
       };
 
@@ -400,8 +403,8 @@ var DrawAdapter = function(canvas_div) {
   };
 
   this.animate = function() {
-    if (this.is_active == false) { return false; };
-    if (figure.pullDown(field) == false) { handleLanding(); };
+    if (this.is_active === false) { return false; }
+    if (figure.pullDown(field) === false) { handleLanding(); }
 
     this.redraw();
 
@@ -411,7 +414,7 @@ var DrawAdapter = function(canvas_div) {
   };
 
   this.keydownListener = function(key) {
-    if (this.is_active == false) { return false; };
+    if (this.is_active === false) { return false; }
 
     switch(key) {
       case 37: // left
@@ -424,10 +427,10 @@ var DrawAdapter = function(canvas_div) {
         figure.pullRight(field.x_cells, field);
         break;
       case 40: // down
-        if (figure.pullDown(field) == false) { handleLanding(); };
+        if (figure.pullDown(field) === false) { handleLanding(); }
         break;
       default: return; // exit this handler for other keys
-    };
+    }
 
     this.redraw();
   };
@@ -435,7 +438,7 @@ var DrawAdapter = function(canvas_div) {
   // private methods
     var gameOver = function() {
       self.is_active = false;
-      draw_adapter.draw_image(self.imgs_bucket['game_over']);
+      draw_adapter.draw_image(self.imgs_bucket.game_over);
     };
 
     var addScorePerLine = function(lines_count) {
@@ -452,8 +455,8 @@ var DrawAdapter = function(canvas_div) {
     };
 
     var giveEncourage = function(removed_lines) {
-      if (removed_lines == 2) { simpleEncourage(); };
-      if (removed_lines >= 3) { greateEncourage(); };
+      if (removed_lines == 2) { simpleEncourage(); }
+      if (removed_lines >= 3) { greateEncourage(); }
     };
 
     // TODO: implement
@@ -475,7 +478,7 @@ var DrawAdapter = function(canvas_div) {
       handleRemovingLines();
       renewFigure();
 
-      if (field.isOverfilled()) { gameOver(); };
+      if (field.isOverfilled()) { gameOver(); }
     };
 
   return this;
