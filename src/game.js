@@ -22,8 +22,8 @@ var Game = function(canvas, imgs_bucket) {
   };
 
   this.animate = function() {
-    if (this.is_active == false) { return false; };
-    if (figure.pullDown(field) == false) { handleLanding(); };
+    if (this.is_active === false) { return false; }
+    if (figure.pullDown(field) === false) { handleLanding(); }
 
     this.redraw();
 
@@ -33,7 +33,7 @@ var Game = function(canvas, imgs_bucket) {
   };
 
   this.keydownListener = function(key) {
-    if (this.is_active == false) { return false; };
+    if (this.is_active === false) { return false; }
 
     switch(key) {
       case 37: // left
@@ -46,10 +46,10 @@ var Game = function(canvas, imgs_bucket) {
         figure.pullRight(field.x_cells, field);
         break;
       case 40: // down
-        if (figure.pullDown(field) == false) { handleLanding(); };
+        if (figure.pullDown(field) === false) { handleLanding(); }
         break;
       default: return; // exit this handler for other keys
-    };
+    }
 
     this.redraw();
   };
@@ -57,7 +57,7 @@ var Game = function(canvas, imgs_bucket) {
   // private methods
     var gameOver = function() {
       self.is_active = false;
-      draw_adapter.draw_image(self.imgs_bucket['game_over']);
+      draw_adapter.draw_image(self.imgs_bucket.game_over);
     };
 
     var addScorePerLine = function(lines_count) {
@@ -74,8 +74,8 @@ var Game = function(canvas, imgs_bucket) {
     };
 
     var giveEncourage = function(removed_lines) {
-      if (removed_lines == 2) { simpleEncourage(); };
-      if (removed_lines >= 3) { greateEncourage(); };
+      if (removed_lines == 2) { simpleEncourage(); }
+      if (removed_lines >= 3) { greateEncourage(); }
     };
 
     // TODO: implement
@@ -97,7 +97,7 @@ var Game = function(canvas, imgs_bucket) {
       handleRemovingLines();
       renewFigure();
 
-      if (field.isOverfilled()) { gameOver(); };
+      if (field.isOverfilled()) { gameOver(); }
     };
 
   return this;
